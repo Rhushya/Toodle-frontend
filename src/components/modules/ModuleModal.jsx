@@ -1,10 +1,20 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+
+import CloseIcon from '../../assets/CloseOutlined.svg';
 
 const ModuleModal = ({ isOpen, onClose, onSave, module = null }) => {
-  const [moduleName, setModuleName] = useState(module ? module.name : '');
+  const [moduleName, setModuleName] = useState('');
+
+  // Sync state with module prop when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setModuleName(module ? module.name : '');
+    }
+  }, [isOpen, module]);
 
   const handleSubmit = e => {
     e.preventDefault();
+    if (!moduleName.trim()) return;
 
     onSave({
       id: module ? module.id : Date.now().toString(),
@@ -16,12 +26,12 @@ const ModuleModal = ({ isOpen, onClose, onSave, module = null }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="modal-overlay">
-      <div className="modal-content">
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal-content" onClick={e => e.stopPropagation()}>
         <div className="modal-header">
           <h2>{module ? 'Edit module' : 'Create new module'}</h2>
           <button className="modal-close" onClick={onClose}>
-            ×
+            <img src={CloseIcon} alt="Close" />
           </button>
         </div>
         <form onSubmit={handleSubmit}>
@@ -43,7 +53,11 @@ const ModuleModal = ({ isOpen, onClose, onSave, module = null }) => {
             <button type="button" className="btn-cancel" onClick={onClose}>
               Cancel
             </button>
-            <button type="submit" className="btn-create">
+            <button
+              type="submit"
+              className="btn-create"
+              disabled={!moduleName.trim()}
+            >
               {module ? 'Save changes' : 'Create'}
             </button>
           </div>

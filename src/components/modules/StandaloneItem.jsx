@@ -7,7 +7,7 @@ import LinkIcon from '../../assets/LinkColored.svg';
 import PDFIcon from '../../assets/PDFColored.svg';
 import EditIcon from '../../assets/PencilLineOutlined.svg';
 
-const ModuleItem = ({ item, onDelete, onEdit, dragHandleProps = {} }) => {
+const StandaloneItem = ({ item, onDelete, onEdit, dragHandleProps = {} }) => {
   const [isOptionsOpen, setIsOptionsOpen] = useState(false);
   const optionsRef = useRef(null);
 
@@ -46,13 +46,12 @@ const ModuleItem = ({ item, onDelete, onEdit, dragHandleProps = {} }) => {
     if (item.fileType?.includes('pdf')) {
       return PDFIcon;
     }
-    // Default to PDF icon for other file types
     return PDFIcon;
   };
 
   if (item.type === 'link') {
     return (
-      <div className="module-item link-item">
+      <div className="standalone-item link-item">
         <div className="item-left">
           <div className="drag-handle" {...dragHandleProps}>
             <img src={DragIcon} alt="Drag" />
@@ -98,7 +97,7 @@ const ModuleItem = ({ item, onDelete, onEdit, dragHandleProps = {} }) => {
 
   if (item.type === 'file') {
     return (
-      <div className="module-item file-item">
+      <div className="standalone-item file-item">
         <div className="item-left">
           <div className="drag-handle" {...dragHandleProps}>
             <img src={DragIcon} alt="Drag" />
@@ -136,7 +135,7 @@ const ModuleItem = ({ item, onDelete, onEdit, dragHandleProps = {} }) => {
     );
   }
 
-  return null; // Fallback for unknown item types
+  return null;
 };
 
-export default ModuleItem;
+export default StandaloneItem;
